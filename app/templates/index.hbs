@@ -1,0 +1,33 @@
+<div id="loader-wrapper">
+	<div id="loader"></div>
+	<div class="loader-section section-left"></div>
+	<div class="loader-section section-right"></div>
+</div>
+<div class="bg">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-4"></div>
+			<div class="col-md-4">
+				<div class="auth-form-login">
+					<div class="auth-logo">
+						<img src="images/mc-logo.png" alt="Image" class="block-center img-rounded">
+					</div>
+					<form id="loginForm" class="auth-form" {{action "authenticate" on="submit"}}>
+						<div class="form-group">
+							{{input value=identification placeholder='Email' class='form-control login' type='email'}}
+						</div>
+						<div class="form-group">
+							{{input value=password placeholder='Password' class='form-control login' type='password'}}
+						</div>
+						<div align="center" style="margin-top: -5px;">
+							{{#link-to 'reset-password' class="white-text" }}Forgot your password?{{/link-to}}
+						</div>
+						<button type="submit" style="margin-top: 15px;" class="btn btn-raised btn-warning btn-block">SIGN IN</button>
+					</form>
+					{{#link-to 'register' class="sign-up" }}SIGN UP{{/link-to}}
+				</div>
+			</div>
+			<div class="col-md-4"></div>
+		</div>
+	</div>
+</div>

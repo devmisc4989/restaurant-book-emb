@@ -1,0 +1,29 @@
+<div id="loader-wrapper">
+	<div id="loader"></div>
+	<div class="loader-section section-left"></div>
+	<div class="loader-section section-right"></div>
+</div>
+<div class="bg">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-4"></div>
+			<div class="col-md-4">
+				<div class="auth-form-login">
+					<div class="auth-logo">
+						<img src="images/mc-logo.png" alt="Image" class="block-center img-rounded">
+
+						<h4 style="margin-top: 50px; margin-bottom: -100px; color: #ffffff;">{{session.data.user.first_name}} {{session.data.user.last_name}}&nbsp;&nbsp;&nbsp;<i class="fa fa-lock" aria-hidden="true"></i></h4>
+					</div>
+
+					<form id="loginForm" class="auth-form" {{action "authenticate" on="submit"}}>
+						<div class="form-group">
+							{{input value=password placeholder='Password' class='form-control login' type='password'}}
+						</div>
+						<button type="submit" style="margin-top: 15px;" class="btn btn-raised btn-warning btn-block">SIGN IN</button>
+					</form>
+				</div>
+			</div>
+			<div class="col-md-4"></div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,132 @@
+{{dashboard-sidebar}}
+
+<div id="main" style="padding-top: 120px;">
+  {{dashboard-topnav}}
+  <div id="subnav" class="navbar navbar-fixed-top subnav" role="navigation">
+    <div class="navbar-inner">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-3">
+            <ul class="nav nav-pills hidden-xs">
+              <li role="presentation">
+                {{#link-to 'restaurants' class="linkback" }}<i class="icon-left" aria-hidden="true"></i> Restaurants{{/link-to}}
+              </li>
+            </ul>
+          </div>
+          <div class="col-sm-6">
+            <div align="center">
+              <ul class="nav nav-pills">
+                <li role="presentation"><a href="#" {{action "gotoContact" restaurant.id}}><i class="icon-user" aria-hidden="true"></i> Contact</a></li>
+                <li role="presentation" class="active"><a href="#"><i class="fa fa-clone" aria-hidden="true"></i> Access</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-sm-3"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid content">
+    <div class="row">
+
+      <div class="col-md-12">
+        <div class="clearfix">
+          <button class="btn btn-raised btn-default pull-right" {{action "addCollaborator"}}>ADD COLLABORATORS</button>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-md-offset-3">
+        <hr style="border-top: 2px solid rgba(0,0,0,0.1); margin-top: 50px; margin-bottom: 10px;" />
+        <div class="row">
+          <div class="col-sm-3">
+            <legend>Collaborators</legend>
+          </div>
+          <div class="col-sm-9">
+            <table class="table">
+              <br/>
+              <br/>
+              <tr>
+                <td style="width:35px; padding-top: 0; margin-top: -55px;">
+                  <div class="wrap"><img src="images/user-photo.png">
+                    <div class="text_over_image">{{substr restaurant.owner.first_name 0 1}}{{substr restaurant.owner.last_name 0 1}}</div>
+                  </div>
+                </td>
+                <td class="name-td">
+                  <p>{{restaurant.owner.first_name}} {{restaurant.owner.last_name}}</p>
+                  <hr style="border-top: 1px solid rgba(0,0,0,1); margin-top: 0; padding-top: 0;" />
+                </td>
+                <td class="role-td">
+                  <p>owner</p>
+                  <hr style="border-top: 1px solid rgba(0,0,0,1); margin-top: 0; padding-top: 0;" />
+                </td>
+                <td class="role-td" style="padding-right: 50px;">
+                  <p>&nbsp;</p>
+                  <hr style="border-top: 1px solid rgba(0,0,0,1); margin-top: 0; padding-top: 0;" />
+                </td>
+              </tr>
+              {{#each restaurant.users as |user|}}
+                <tr>
+                  <td style="width:35px; padding-top: 0; margin-top: -55px;">
+                    <div class="wrap"><img src="images/user-photo.png">
+                      <div class="text_over_image">{{substr user.first_name 0 1}}{{substr user.last_name 0 1}}</div>
+                    </div>
+                  </td>
+                  <td class="name-td">
+                    <p>{{user.first_name}} {{user.last_name}}</p>
+                    <hr style="border-top: 1px solid rgba(0,0,0,1); margin-top: 0; padding-top: 0;" />
+                  </td>
+                  <td class="role-td">
+                    <p>{{user.role}}</p>
+                    <hr style="border-top: 1px solid rgba(0,0,0,1); margin-top: 0; padding-top: 0;" />
+                  </td>
+                  <td class="role-td" style="padding-right: 50px;">
+                    <div class="clearfix">
+                      <p><a href="#" style="margin-top: -4px; margin-bottom: 5px; color: #000000;" class="pull-right" {{action "removeCollaborator" users user.id restaurant.id}}><i class="icon-cancel" aria-hidden="true"></i></a></p>
+                    </div>
+                    <hr style="border-top: 1px solid rgba(0,0,0,1); margin-top: 0; padding-top: 0;" />
+                  </td>
+                </tr>
+              {{/each}}
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end container-fluid -->
+
+</div>
+
+<!-- Modal -->
+<div class="modal accessModal fade" id="addCollaborator" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 style="text-align:center; color: #FC7C77;" class="modal-title" id="myModalLabel">ADD COLLABORATOR</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" {{action "addUser" on="submit"}}>
+          <fieldset>
+            <div style="overflow: scroll;">
+              <legend>Details</legend>
+              <div class="form-group col-md-12">
+                <label class="control-label">First Name</label> {{input value=first_name class='form-control'}}
+              </div>
+              <div class="form-group col-md-12">
+                <label class="control-label">Last Name</label> {{input value=last_name class='form-control'}}
+              </div>
+              <div class="form-group col-md-12">
+                <label for="inputEmail" class="control-label">Email</label> {{input value=email class='form-control'}}
+              </div>
+            </div>
+            <div align="center">
+              <button type="submit" class="btn btn-raised btn-info">ADD</button>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+<div id="mySidenav" class="sidenav collapsed">
+  <div class="logo">
+    <img src="images/mc-logo.png">
+  </div>
+  <ul class="nav nav-pills nav-stacked" style="margin-left: 10px; margin-top: 40px;">
+    <li role="presentation">
+      {{#link-to "dashboard" current-when='dashboard' }}<i class="icon-home"></i>HOME{{/link-to}}
+    </li>
+    <li role="presentation">
+      {{#link-to "restaurants" current-when='restaurants restaurant' }}<i class="icon-small_restaurant"></i> RESTAURANTS{{/link-to}}
+    </li>
+    <li role="presentation">
+      {{#link-to "menu.overview" current-when='menu.overview menu' }}<i class="icon-copy"></i> MENUS{{/link-to}}
+    </li>
+    <li role="presentation">
+      {{#link-to "booking.overview" current-when='booking.overview booking' }}<i class="icon-calendar"></i> BOOKINGS{{/link-to}}
+    </li>
+  </ul>
+</div>

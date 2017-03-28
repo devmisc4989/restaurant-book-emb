@@ -1,0 +1,119 @@
+{{dashboard-sidebar}}
+
+<div id="main">
+  <div id="subnav" style="margin-top: 0;"></div>
+  {{dashboard-topnav}}
+  <br/>
+  <div class="container-fluid">
+    <table width="100%">
+      <tr>
+        <td>
+          <div class="btn-group">
+            <button type="button" class="btn dropdown-toggle business-select" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{active_restaurant.name}} <span class="caret"></span>
+          </button>
+            <ul class="dropdown-menu">
+              {{#each restaurants as |restaurant|}}
+                <li><a href="#" {{action "findMenus" restaurant.id restaurant.name}}>{{restaurant.name}}</a></li>
+              {{/each}}
+            </ul>
+          </div>
+        </td>
+        <td><button type="button" class="btn btn-raised btn-default pull-right" {{action 'menuModal'}}>NEW MENU <i class="fa fa-plus" aria-hidden="true"></i></button></td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="container-fluid content">
+    <div class="row">
+
+      <div class="col-md-12 col-sm-12">
+        <div class="col-md-8 col-md-offset-2 col-sm-12">
+          <div class="page-header">
+            <h4>Published</h4>
+          </div>
+          {{#each menus_published as |menu|}}
+            <div class="panel panel-body menu-overview" style="padding-top: 0; padding-bottom: 10px;">
+              <table width="100%">
+                <tr>
+                  <td>
+                    <h3 class="text-uppercase">{{menu.title}}</h3></td>
+                  <td width="50px" class="text-center"><a href="/menu/details/{{menu.id}}" class="btn" style="margin-top:0px; margin-bottom: 0px;"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></td>
+                </tr>
+                <tr>
+                  <td>
+                    <h5><a style="color: #59C0E3; font-size: 14px; font-weight: 200;">Updated by {{menu.creator.first_name}} / {{format menu.updatedAt}}</a></h5></td>
+                  <td></td>
+                </tr>
+              </table>
+            </div>
+          {{/each}}
+
+          <div class="page-header">
+            <h4>Drafts</h4>
+          </div>
+          {{#each menus_drafted as |menu|}}
+            <div class="panel panel-body menu-overview" style="padding-top: 0; padding-bottom: 10px;">
+              <table width="100%">
+                <tr>
+                  <td>
+                    <h3 class="text-uppercase">{{menu.title}}</h3></td>
+                  <td width="50px" class="text-center"><a href="/menu/details/{{menu.id}}" class="btn" style="margin-top:0px; margin-bottom: 0px;"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></td>
+                </tr>
+                <tr>
+                  <td>
+                    <h5><a style="color: #59C0E3; font-size: 14px; font-weight: 200;">Updated by {{menu.creator.first_name}} / {{format menu.updatedAt}}</a></h5></td>
+                  <td style="float:right;">
+                    <div class="btn-group">
+                      <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-ellipsis-v" aria-hidden="true" style="color: #FB6560;"></i>
+                  </button>
+                      <ul class="dropdown-menu" style="width: 80px; padding-left: 0; margin-left: 0; padding-right: 0; margin-right: 0;">
+                        <li style="text-align: center; padding-left: 0; margin-left: 0; padding-right: 0; margin-right: 0;">
+                          <a href="#" style="text-align: center; padding-left: 0; margin-left: 0; padding-right: 0; margin-right: 0;" {{action "deleteMenu" menu.id}}>Delete</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          {{/each}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+
+<!-- Modal -->
+<div class="modal menuModal fade" id="createMenu" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 style="text-align:center; color: #FC7C77;" class="modal-title" id="myModalLabel">CREATE MENU</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" {{action "createMenu" on="submit"}}>
+          <fieldset>
+            <div class="form-group col-md-12">
+              <label class="control-label">Title</label>
+              <input type="text" class="form-control" id="title">
+            </div>
+            <div class="form-group col-md-12">
+              <label class="control-label">Description</label>
+              <textarea class="form-control" id="description" rows="3"></textarea>
+            </div>
+            <input type="hidden" class="form-control" value="{{active_restaurant.id}}" id="business_id">
+            <div align="center">
+              <button type="submit" class="btn btn-raised btn-info">CREATE MENU</button>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

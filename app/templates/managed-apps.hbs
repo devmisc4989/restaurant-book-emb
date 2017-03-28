@@ -1,0 +1,106 @@
+{{dashboard-sidebar}}
+
+<div id="main" style="padding-top: 120px;">
+  {{dashboard-topnav}}
+  <div id="subnav" class="navbar navbar-fixed-top subnav" role="navigation">
+    <div class="navbar-inner">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-3">
+            <ul class="nav nav-pills">
+              <li role="presentation">
+                {{#link-to 'dashboard' class="linkback" }}<i class="icon-left" aria-hidden="true"></i> Dashboard{{/link-to}}
+              </li>
+            </ul>
+          </div>
+          <div class="col-sm-6">
+            <div align="center">
+              <ul class="nav nav-pills">
+                <li role="presentation">
+                  {{#link-to 'profile'}}<i class="icon-user" aria-hidden="true"></i> Profile{{/link-to}}
+                </li>
+                <li role="presentation" class="active">
+                  {{#link-to 'managed-apps'}}<i class="fa fa-clone" aria-hidden="true"></i> Manage Apps{{/link-to}}
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-sm-3"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid content">
+    <div class="row">
+
+      <div class="col-md-6 col-md-offset-3">
+        <hr style="border-top: 2px solid rgba(0,0,0,0.1); margin-top: 50px; margin-bottom: 10px;" />
+        <legend>My Apps</legend>
+        <br/>
+        <div class="panel panel-default">
+          <div class="panel panel-body">
+            <table align="center" style="margin: 0px auto; text-align: center;">
+              <tr>
+                <a href='#' style="color: #000;" {{action 'description'}}>DESCRIPTION</a>
+              </tr>
+              <tr>
+                <a href='#' style="color: #000;" {{action 'details'}}>DETAILS</a>
+              </tr>
+            </table>
+            <div id="description">
+              <table align="center" style="margin: 0px auto; text-align: center;">
+                <tr>
+                  <img src="images/logo5.png">
+                </tr>
+                <tr>
+                  FREE
+                </tr>
+                <tr>
+                  <p>menuCLOUD is your all in one easy to use menu manager and publisher. Managae, design and publish your menus all from within one cloud based app.</p>
+                </tr>
+              </table>
+            </div>
+            <div id="details" hidden>
+              <table align="center" style="margin: 0px auto; text-align: center;">
+                <tr>
+                  <td>
+                    Your Subscription:
+                  </td>
+                  <td>
+                    <div style="padding-left: 50px; padding-right: 50px;"></div>
+                  </td>
+                  <td>
+                    Free '$0/month'
+                  </td>
+                </tr>
+                <br/>
+                <tr>
+                  <td>
+                    Added restaurants:
+                  </td>
+                  <td>
+                    <div style="padding-left: 50px; padding-right: 50px;"></div>
+                  </td>
+                  <td>
+                    {{session.User.place_data.name}}
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <table align="center" style="margin: 0px auto; text-align: center;">
+          <tr>
+            <p>Have an idea? we want to here about it!</p>
+          </tr>
+          <tr>
+            <button class="btn btn-info btn-md">CONTACT</button>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- end container-fluid -->
+
+</div>

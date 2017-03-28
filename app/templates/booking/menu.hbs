@@ -1,0 +1,1020 @@
+ {{dashboard-sidebar}}
+
+<div id="main" style="padding-top: 120px;">
+  {{dashboard-topnav}}
+  <div id="subnav" class="navbar navbar-fixed-top subnav" role="navigation">
+    <div class="navbar-inner">
+      <div class="container-fluid">
+
+        <div class="row">
+          <div class="col-sm-3">
+            <ul class="nav nav-pills hidden-xs">
+              <li role="presentation">
+                {{#link-to 'booking.overview' class="linkback" }}<i class="icon-left" aria-hidden="true"></i> Booking Overview {{/link-to}}
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-sm-6">
+            <div align="center">
+              <ul class="nav nav-pills">
+                <li role="presentation"><a href="/booking/details/{{booking.id}}"><i class="fa fa-user-o" aria-hidden="true"></i> Details</a></li>
+                <li role="presentation" class="active"><a href="#"><i class="fa fa-clone" aria-hidden="true"></i> Menu</a></li>
+                <li role="presentation"><a href="#"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-sm-3"></div>
+        </div>
+
+
+
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid content">
+
+    <div class="row">
+
+      <div class="col-sm-12">
+        <table width="100%">
+          <tr>
+            <td>
+              <div class="btn-group">
+                <button type="button" class="btn dropdown-toggle business-select" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{menu.title}} <span class="caret"></span>
+              </button>
+                <ul class="dropdown-menu">
+                  {{#each menus as |menu|}}
+                    <li><a href="/booking/menu/{{menu.id}}/{{menu.input_index}}/{{menu.menu_index}}">{{menu.name}}</a></li>
+                  {{/each}}
+                </ul>
+              </div>
+            </td>
+            <td>
+              <div class="clearfix">
+                <div class="btn-toolbar pull-right" role="toolbar" aria-label="...">
+                  <div class="btn-group btn-group-sm" role="group" style="padding-right: 12px;">
+                    <button type="button" class="btn btn-fab" style="padding-left:25%; background-color: #fff;" {{action "saveChanges" booking_inputs menu_items}}><i class="icon-floppy" style="color: #59C0E3; font-size: 16px; font-weight: 700;"></i></button>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <br/>
+
+    <div class="row">
+
+      <div class="col-md-2 hidden-xs"></div>
+      <div class="col-md-8">
+
+        <div class="panel panel-body menu-title" style="margin: 10px 25px 0px 25px; padding-left: 50px; padding-top:40px; padding-bottom:30px;">
+          <div class="form-group menu-item">
+            {{input id="menu-title" value=menu.title class='form-control menu-title-input' type='text'}}
+          </div>
+          <div class="form-group menu-item">
+            {{input id="menu-description" value=menu.description class='form-control input-header' type='text'}}
+          </div>
+        </div>
+        {{#if menu.fixed_price}}
+          <div class="panel panel-body menu-title" style="margin: 0px 25px 0px 25px; padding-left: 50px; padding-top:30px; padding-bottom:20px;">
+            <form class="form">
+              <div class="row">
+                <div class="col-sm-8">
+                  <div class="form-group menu-item">
+                    {{textarea rows="1" id="fixed-price-description" value=menu.inputs.fixed_price.description class='form-control input-header' type='text'}}
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group menu-item">
+                    {{input id="fixed-price-amount" value=menu.inputs.fixed_price.amount class='form-control input-header' type='number'}}
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        {{else}}
+          {{input id="fixed-price-description" value=menu.inputs.fixed_price.description type='hidden'}} {{input id="fixed-price-amount" value=menu.inputs.fixed_price.amount type='hidden'}}
+        {{/if}}
+
+        <br/>
+
+        {{#each items as |item|}}
+          {{#if (if_eq item.position active)}}
+            {{#draggable-item content=item.position items=menu_items}}
+              {{#if (if_eq item.type "item")}}
+                <div id="card-{{item.position}}" class="cc-card popout">
+                  <div class="header">
+                    <div class="row">
+                      <div class="col-sm-3"></div>
+                      <div class="col-sm-6">
+                        <div align="center">
+                          <i class="material-icons" style="font-size: 24px;">drag_handle</i>
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <a href="#" class="pull-right" {{action "deleteItem" menu_items item.position}}><i style="font-size: 24px;" class="icon-ic_close_24px"></i></a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="content">
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <form id="{{item.position}}-form" class="form-horizontal" {{action "updateItem" menu_items item.position on="submit" }}>
+                          <fieldset>
+                            <div class="form-group menu-item">
+                              {{textarea rows=1 type="text" placeholder="ITEM TITLE" class="form-control input-header" id=(concat item.position '-title') value=item.title keyUp=(action "typeahead" all_products item.position)}}
+                              <ul id="{{item.position}}-products-list" hidden class="list-group" style="padding: 10px; border: 1px solid #f1f1f1; max-height: 150px; overflow: scroll;">
+                                {{#if (isempty products)}}
+                                  <li class="list-group-item" {{action "addProduct" item.position menu.business.id all_products menu_items on="click"}}><a href="#" style="color: #246BC6; font-size: 16px;">+ add <b>'{{item.title}}'</b> to your products list</a></li>
+                                {{else}}
+                                  <li class="list-group-item" {{action "addProduct" item.position menu.business.id all_products menu_items on="click"}}><a href="#" style="color: #246BC6; font-size: 16px;">+ add <b>'{{item.title}}'</b> to your products list</a></li>
+                                  {{#each products as |product|}}
+                                    <li class="list-group-item" {{action "addSelectedItem" product.name item.position menu_items on="click"}}><a href="#" style="color: #222222; font-size: 16px;">{{product.title}}</a></li>
+                                  {{/each}}
+                                {{/if}}
+                              </ul>
+                            </div>
+                            <div class="form-group menu-item">
+                              {{textarea rows=1 type="text" placeholder="DESCRIPTION" class="form-control input-sub-header" id=(concat item.position '-description') value=item.description focus-out=(action "focusOut" item.position)}}
+                            </div>
+                            {{input id=(concat price.position "-product") value=item.product type="hidden"}}
+                          </fieldset>
+                        </form>
+                      </div>
+                      <div class="col-sm-6">
+                        <br/>
+                        <br/>
+                        {{#each item.prices as |price|}}
+                          {{#if (if_last price.position item.prices)}}
+                            <form class="form-inline pull-right">
+                              <div class="form-group menu-item">
+                                <label for="{{price.position}}-price-description"><i class="material-icons" style="font-size: 14px;color: #777;">label</i>
+                          </label> {{input id=(concat price.position "-price-description") value=price.description placeholder='Label' class='form-control price-description-input' type='text' focus-out=(action "updatePriceDescription"
+                                menu_items item.position price.position)}}
+                              </div>
+                              <div class="form-group menu-item">
+                                {{input id=(concat price.position "-price-amount") value=price.amount placeholder='Price' class='form-control price-amount-input' type='text' focus-out=(action "updatePriceAmount" menu_items item.position price.position)}}
+                              </div>
+                              <button type="button" class="btn btn-price" {{action "addPrice" menu_items item.position}}><i class="material-icons">add</i>
+                        </button>
+                            </form>
+                          {{else}}
+                            <form class="form-inline pull-right">
+                              <div class="form-group menu-item">
+                                <label for="{{price.position}}-price-description"><i class="material-icons" style="font-size: 14px;color: #777;">label</i>
+                          </label> {{input id=(concat price.position "-price-description") value=price.description placeholder='Label' class='form-control price-description-input' type='text' focus-out=(action "updatePriceDescription"
+                                menu_items item.position price.position)}}
+                              </div>
+                              <div class="form-group menu-item">
+                                {{input id=(concat price.position "-price-amount") value=price.amount placeholder='Price' class='form-control price-amount-input' type='text' focus-out=(action "updatePriceAmount" menu_items item.position price.position)}}
+                              </div>
+                              <button type="button" class="btn btn-price" {{action "deletePrice" menu_items item.position}}><i class="material-icons">close</i>
+                        </button>
+                            </form>
+                          {{/if}}
+                        {{/each}}
+                      </div>
+                    </div>
+                    <div id="options-summary" hidden class="row">
+                      <br/>
+                      <div class="col-sm-12" style="margin-left: -15px; color: #7C7C7C;">
+                        {{#each item.options as |option|}}
+                          <strong>{{option.type}}</strong> {{option.description}} ({{option.amount}})
+                          <br/> {{/each}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="{{collapsible.state}}">
+                    {{#each item.options as |option|}}
+                      <form id="{{item.position}}{{option.position}}-option-form" {{action "updateOption" menu_items item.position option.position on="submit" }}>
+                        <div class="row">
+                          <div class="col-sm-2">
+                            <div class="form-group">
+                              <select class="form-control price-select" id="{{item.position}}{{option.position}}-option-type" {{action "focusOutOption" item.position option.position on='change' }}>
+                            <option disabled>Select Option</option>
+                            <option value="{{option.type}}">{{option.type}}</option>
+                            <option disabled>──</option>
+                            <option value="addition">addition</option>
+                            <option value="choice">choice</option>
+                            <option value="combo">combo</option>
+                          </select>
+                            </div>
+                          </div>
+                          <div class="col-sm-7">
+                            <div class="form-group menu-item">
+                              {{input id=(concat item.position (concat option.position "-option-description")) value=option.description placeholder='Label' class='form-control price-select' type='text' focus-out=(action "focusOutOption" item.position option.position)}}
+                            </div>
+                          </div>
+                          <div class="col-sm-2">
+                            <div class="form-group menu-item">
+                              {{input id=(concat item.position (concat option.position "-option-amount")) value=option.amount placeholder='Price' class='form-control price-select' type='text' focus-out=(action "focusOutOption" item.position option.position)}}
+                            </div>
+                          </div>
+                          <div class="col-sm-1">
+                            <div class="form-group menu-item">
+                              <button type="button" style="padding-left:7px; padding-right:7px; margin-top: 0px; float:left;" class="btn"><i class="icon-ic_close_24px" aria-hidden="true" {{action "deleteOption" menu_items item.position option.position}}></i>
+                          </button>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                      {{#each option.selection as |selection|}}
+                        <div class="row">
+                          <div class="col-sm-10 col-sm-offset-1">
+                            <form id="{{item.position}}{{option.position}}{{selection.position}}-selection-form" {{action "updateSelection" menu_items item.position option.position selection.position on="submit" }}>
+                              <div class="row">
+                                <div class="col-sm-9">
+                                  <div class="form-group menu-item">
+                                    {{input id=(concat item.position (concat option.position (concat selection.position "-selection-description"))) value=selection.description placeholder='Selection' class='form-control price-select' type='text' focus-out=(action "focusOutSelection" item.position
+                                    option.position selection.position)}}
+                                  </div>
+                                </div>
+                                <div class="col-sm-2">
+                                  <div class="form-group menu-item">
+                                    {{input id=(concat item.position (concat option.position (concat selection.position "-selection-amount"))) value=selection.amount placeholder='Price' class='form-control price-select' type='text' focus-out=(action "focusOutSelection" item.position option.position
+                                    selection.position)}}
+                                  </div>
+                                </div>
+                                <div class="col-sm-1">
+                                  <div class="form-group menu-item">
+                                    <button type="button" style="padding-left:7px; padding-right:7px; margin-top: 0px; float:left;" class="btn"><i class="icon-ic_close_24px" aria-hidden="true" {{action "deleteOption" menu_items item.position option.position}}></i>
+                              </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      {{/each}}
+                      <div class="row">
+                        <div class="col-sm-10 col-sm-offset-1">
+                          <button style="color: #72C8E1;" type="button" class="plus-btn" {{action "addSelection" menu_items item.position option.position}}>+ add selection</button>
+                        </div>
+                      </div>
+                      <br/> {{/each}}
+                    <button type="button" class="plus-btn" {{action "addOption" menu_items item.position}}>+ add additional option</button>
+                  </div>
+                  <div class="footer">
+                    <div class="clearfix">
+                      <div class="btn-group pull-left" role="group">
+                        <button type="button" class="btn btn-footer-toggle" {{action "move" menu_items item.position -1}}><i class="fa fa-angle-up" aria-hidden="true"></i></button>
+                        <button type="button" class="btn btn-footer-toggle" {{action "move" menu_items item.position 1}}><i class="fa fa-angle-down" aria-hidden="true"></i></button>
+                      </div>
+                      <div class="btn-group pull-right" role="group">
+                        <button type="button" class="btn btn-footer" {{action "deleteProduct" item.position item.product menu_items all_products}}><i class="material-icons" aria-hidden="true">delete</i>
+                      </button>
+                        {{#if collapsible.active}}
+                          <button type="button" class="btn btn-footer-toggle" {{action "toggleCollapse" collapsible.active}}><i class="fa fa-angle-up" aria-hidden="true"></i>
+                      </button>
+                        {{else}}
+                          <button type="button" class="btn btn-footer-toggle" {{action "toggleCollapse" collapsible.active}}><i class="fa fa-angle-down" aria-hidden="true"></i>
+                      </button>
+                        {{/if}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {{else if (if_eq item.type "group")}}
+                <br/><br/>
+                <div id="card-{{item.position}}" class="cc-card popout">
+                  <div class="header">
+                    <div class="row">
+                      <div class="col-sm-3"></div>
+                      <div class="col-sm-6">
+                        <div align="center">
+                          <i class="material-icons" style="font-size: 24px;">drag_handle</i>
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <a href="#" class="pull-right" {{action "deleteItem" menu_items item.position}}><i style="font-size: 24px;" class="icon-ic_close_24px"></i></a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="content">
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <form id="{{item.position}}-form" class="form-horizontal" {{action "updateItem" menu_items item.position on="submit" }}>
+                          <fieldset>
+                            <div class="form-group menu-item">
+                              {{textarea rows=1 type="text" placeholder="CATEGORY TITLE" class="form-control input-category" id=(concat item.position '-title') value=item.title focus-out=(action "focusOut" item.position)}}
+                            </div>
+                            <div class="form-group menu-item">
+                              {{textarea rows=1 type="text" placeholder="DESCRIPTION" class="form-control input-sub-header" id=(concat item.position '-description') value=item.description focus-out=(action "focusOut" item.position)}}
+                            </div>
+                          </fieldset>
+                        </form>
+                      </div>
+                      <div class="col-sm-6">
+                        <br/>
+                        <br/>
+                        {{#each item.prices as |price|}}
+                          {{#if (if_last price.position item.prices)}}
+                            <form class="form-inline pull-right">
+                              <div class="form-group menu-item">
+                                <label for="{{price.position}}-price-description"><i class="material-icons" style="font-size: 14px;color: #777;">label</i>
+              						</label> {{input id=(concat price.position "-price-description") value=price.description placeholder='Label' class='form-control price-description-input' type='text' focus-out=(action "updatePriceDescription"
+                                menu_items item.position price.position)}}
+                              </div>
+                              <div class="form-group menu-item">
+                                {{input id=(concat price.position "-price-amount") value=price.amount placeholder='Price' class='form-control price-amount-input' type='text' focus-out=(action "updatePriceAmount" menu_items item.position price.position)}}
+                              </div>
+                              <button type="button" class="btn btn-price" {{action "addPrice" menu_items item.position}}><i class="material-icons">add</i>
+              					</button>
+                            </form>
+                          {{else}}
+                            <form class="form-inline pull-right">
+                              <div class="form-group menu-item">
+                                <label for="{{price.position}}-price-description"><i class="material-icons" style="font-size: 14px;color: #777;">label</i>
+              						</label> {{input id=(concat price.position "-price-description") value=price.description placeholder='Label' class='form-control price-description-input' type='text' focus-out=(action "updatePriceDescription"
+                                menu_items item.position price.position)}}
+                              </div>
+                              <div class="form-group menu-item">
+                                {{input id=(concat price.position "-price-amount") value=price.amount placeholder='Price' class='form-control price-amount-input' type='text' focus-out=(action "updatePriceAmount" menu_items item.position price.position)}}
+                              </div>
+                              <button type="button" class="btn btn-price" {{action "deletePrice" menu_items item.position}}><i class="material-icons">close</i>
+              					</button>
+                            </form>
+                          {{/if}}
+                        {{/each}}
+                      </div>
+                    </div>
+                    <div id="options-summary" hidden class="row">
+                      <br/>
+                      <div class="col-sm-12" style="margin-left: -15px; color: #7C7C7C;">
+                        {{#each item.options as |option|}}
+                          <strong>{{option.type}}</strong> {{option.description}} ({{option.amount}})
+                          <br/> {{/each}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="{{collapsible.state}}">
+                    {{#each item.options as |option|}}
+                      <form id="{{item.position}}{{option.position}}-option-form" {{action "updateOption" menu_items item.position option.position on="submit" }}>
+                        <div class="row">
+                          <div class="col-sm-2">
+                            <div class="form-group">
+                              <select class="form-control price-select" id="{{item.position}}{{option.position}}-option-type" {{action "focusOutOption" item.position option.position on='change' }}>
+              							<option disabled>Select Option</option>
+              							<option value="{{option.type}}">{{option.type}}</option>
+              							<option disabled>──</option>
+              							<option value="addition">addition</option>
+              							<option value="choice">choice</option>
+              							<option value="combo">combo</option>
+              						</select>
+                            </div>
+                          </div>
+                          <div class="col-sm-7">
+                            <div class="form-group menu-item">
+                              {{input id=(concat item.position (concat option.position "-option-description")) value=option.description placeholder='Label' class='form-control price-select' type='text' focus-out=(action "focusOutOption" item.position option.position)}}
+                            </div>
+                          </div>
+                          <div class="col-sm-2">
+                            <div class="form-group menu-item">
+                              {{input id=(concat item.position (concat option.position "-option-amount")) value=option.amount placeholder='Price' class='form-control price-select' type='text' focus-out=(action "focusOutOption" item.position option.position)}}
+                            </div>
+                          </div>
+                          <div class="col-sm-1">
+                            <div class="form-group menu-item">
+                              <button type="button" style="padding-left:7px; padding-right:7px; margin-top: 0px; float:left;" class="btn"><i class="icon-ic_close_24px" aria-hidden="true" {{action "deleteOption" menu_items item.position option.position}}></i>
+              						</button>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                      {{#each option.selection as |selection|}}
+                        <div class="row">
+                          <div class="col-sm-10 col-sm-offset-1">
+                            <form id="{{item.position}}{{option.position}}{{selection.position}}-selection-form" {{action "updateSelection" menu_items item.position option.position selection.position on="submit" }}>
+                              <div class="row">
+                                <div class="col-sm-9">
+                                  <div class="form-group menu-item">
+                                    {{input id=(concat item.position (concat option.position (concat selection.position "-selection-description"))) value=selection.description placeholder='Selection' class='form-control price-select' type='text' focus-out=(action "focusOutSelection" item.position
+                                    option.position selection.position)}}
+                                  </div>
+                                </div>
+                                <div class="col-sm-2">
+                                  <div class="form-group menu-item">
+                                    {{input id=(concat item.position (concat option.position (concat selection.position "-selection-amount"))) value=selection.amount placeholder='Price' class='form-control price-select' type='text' focus-out=(action "focusOutSelection" item.position option.position
+                                    selection.position)}}
+                                  </div>
+                                </div>
+                                <div class="col-sm-1">
+                                  <div class="form-group menu-item">
+                                    <button type="button" style="padding-left:7px; padding-right:7px; margin-top: 0px; float:left;" class="btn"><i class="icon-ic_close_24px" aria-hidden="true" {{action "deleteOption" menu_items item.position option.position}}></i>
+              								</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      {{/each}}
+                      <div class="row">
+                        <div class="col-sm-10 col-sm-offset-1">
+                          <button style="color: #72C8E1;" type="button" class="plus-btn" {{action "addSelection" menu_items item.position option.position}}>+ add selection</button>
+                        </div>
+                      </div>
+                      <br/> {{/each}}
+                    <button type="button" class="plus-btn" {{action "addOption" menu_items item.position}}>+ add additional option</button>
+                  </div>
+                  <div class="footer">
+                    <div class="clearfix">
+                      <div class="btn-group pull-left" role="group">
+                        <button type="button" class="btn btn-footer-toggle" {{action "move" menu_items item.position -1}}><i class="fa fa-angle-up" aria-hidden="true"></i></button>
+                        <button type="button" class="btn btn-footer-toggle" {{action "move" menu_items item.position 1}}><i class="fa fa-angle-down" aria-hidden="true"></i></button>
+                      </div>
+                      <div class="btn-group pull-right" role="group">
+                        <button type="button" class="btn btn-footer" {{action "addSubCategory" menu_items item.position}}><i class="icon-plus" aria-hidden="true"></i>
+              				</button>
+                        {{#if collapsible.active}}
+                          <button type="button" class="btn btn-footer-toggle" {{action "toggleCollapse" collapsible.active}}><i class="fa fa-angle-up" aria-hidden="true"></i>
+              				</button>
+                        {{else}}
+                          <button type="button" class="btn btn-footer-toggle" {{action "toggleCollapse" collapsible.active}}><i class="fa fa-angle-down" aria-hidden="true"></i>
+              				</button>
+                        {{/if}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {{else if (if_eq item.type "sub-group")}}
+                <div id="card-{{item.position}}" class="cc-card popout">
+                  <div class="header">
+                    <div class="row">
+                      <div class="col-sm-3"></div>
+                      <div class="col-sm-6">
+                        <div align="center">
+                          <i class="material-icons" style="font-size: 24px;">drag_handle</i>
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <a href="#" class="pull-right" {{action "deleteItem" menu_items item.position}}><i style="font-size: 24px;" class="icon-ic_close_24px"></i></a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="content">
+                    <div class="row" style="margin-left: 10px; padding-left: 25px; border-left: 2px solid #C4C4C4;">
+                      <div class="col-sm-6">
+                        <form id="{{item.position}}-form" class="form-horizontal" {{action "updateItem" menu_items item.position on="submit" }}>
+                          <fieldset>
+                            <div class="form-group menu-item">
+                              {{textarea rows=1 type="text" placeholder="SUB CATEGORY TITLE" class="form-control input-category" id=(concat item.position '-title') value=item.title focus-out=(action "focusOut" item.position)}}
+                            </div>
+                            <div class="form-group menu-item">
+                              {{textarea rows=1 type="text" placeholder="DESCRIPTION" class="form-control input-sub-header" id=(concat item.position '-description') value=item.description focus-out=(action "focusOut" item.position)}}
+                            </div>
+                          </fieldset>
+                        </form>
+                      </div>
+                      <div class="col-sm-6">
+                        <br/>
+                        <br/>
+                        {{#each item.prices as |price|}}
+                          {{#if (if_last price.position item.prices)}}
+                            <form class="form-inline pull-right">
+                              <div class="form-group menu-item">
+                                <label for="{{price.position}}-price-description"><i class="material-icons" style="font-size: 14px;color: #777;">label</i>
+                          </label> {{input id=(concat price.position "-price-description") value=price.description placeholder='Label' class='form-control price-description-input' type='text' focus-out=(action "updatePriceDescription"
+                                menu_items item.position price.position)}}
+                              </div>
+                              <div class="form-group menu-item">
+                                {{input id=(concat price.position "-price-amount") value=price.amount placeholder='Price' class='form-control price-amount-input' type='text' focus-out=(action "updatePriceAmount" menu_items item.position price.position)}}
+                              </div>
+                              <button type="button" class="btn btn-price" {{action "addPrice" menu_items item.position}}><i class="material-icons">add</i>
+                        </button>
+                            </form>
+                          {{else}}
+                            <form class="form-inline pull-right">
+                              <div class="form-group menu-item">
+                                <label for="{{price.position}}-price-description"><i class="material-icons" style="font-size: 14px;color: #777;">label</i>
+                          </label> {{input id=(concat price.position "-price-description") value=price.description placeholder='Label' class='form-control price-description-input' type='text' focus-out=(action "updatePriceDescription"
+                                menu_items item.position price.position)}}
+                              </div>
+                              <div class="form-group menu-item">
+                                {{input id=(concat price.position "-price-amount") value=price.amount placeholder='Price' class='form-control price-amount-input' type='text' focus-out=(action "updatePriceAmount" menu_items item.position price.position)}}
+                              </div>
+                              <button type="button" class="btn btn-price" {{action "deletePrice" menu_items item.position}}><i class="material-icons">close</i>
+                        </button>
+                            </form>
+                          {{/if}}
+                        {{/each}}
+                      </div>
+                    </div>
+                    <div id="options-summary" hidden class="row">
+                      <br/>
+                      <div class="col-sm-12" style="margin-left: -15px; color: #7C7C7C;">
+                        {{#each item.options as |option|}}
+                          <strong>{{option.type}}</strong> {{option.description}} ({{option.amount}})
+                          <br/> {{/each}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="{{collapsible.state}}">
+                    {{#each item.options as |option|}}
+                      <form id="{{item.position}}{{option.position}}-option-form" {{action "updateOption" menu_items item.position option.position on="submit" }}>
+                        <div class="row">
+                          <div class="col-sm-2">
+                            <div class="form-group">
+                              <select class="form-control price-select" id="{{item.position}}{{option.position}}-option-type" {{action "focusOutOption" item.position option.position on='change' }}>
+                            <option disabled>Select Option</option>
+                            <option value="{{option.type}}">{{option.type}}</option>
+                            <option disabled>──</option>
+                            <option value="addition">addition</option>
+                            <option value="choice">choice</option>
+                            <option value="combo">combo</option>
+                          </select>
+                            </div>
+                          </div>
+                          <div class="col-sm-7">
+                            <div class="form-group menu-item">
+                              {{input id=(concat item.position (concat option.position "-option-description")) value=option.description placeholder='Label' class='form-control price-select' type='text' focus-out=(action "focusOutOption" item.position option.position)}}
+                            </div>
+                          </div>
+                          <div class="col-sm-2">
+                            <div class="form-group menu-item">
+                              {{input id=(concat item.position (concat option.position "-option-amount")) value=option.amount placeholder='Price' class='form-control price-select' type='text' focus-out=(action "focusOutOption" item.position option.position)}}
+                            </div>
+                          </div>
+                          <div class="col-sm-1">
+                            <div class="form-group menu-item">
+                              <button type="button" style="padding-left:7px; padding-right:7px; margin-top: 0px; float:left;" class="btn"><i class="icon-ic_close_24px" aria-hidden="true" {{action "deleteOption" menu_items item.position option.position}}></i>
+                          </button>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                      {{#each option.selection as |selection|}}
+                        <div class="row">
+                          <div class="col-sm-10 col-sm-offset-1">
+                            <form id="{{item.position}}{{option.position}}{{selection.position}}-selection-form" {{action "updateSelection" menu_items item.position option.position selection.position on="submit" }}>
+                              <div class="row">
+                                <div class="col-sm-9">
+                                  <div class="form-group menu-item">
+                                    {{input id=(concat item.position (concat option.position (concat selection.position "-selection-description"))) value=selection.description placeholder='Selection' class='form-control price-select' type='text' focus-out=(action "focusOutSelection" item.position
+                                    option.position selection.position)}}
+                                  </div>
+                                </div>
+                                <div class="col-sm-2">
+                                  <div class="form-group menu-item">
+                                    {{input id=(concat item.position (concat option.position (concat selection.position "-selection-amount"))) value=selection.amount placeholder='Price' class='form-control price-select' type='text' focus-out=(action "focusOutSelection" item.position option.position
+                                    selection.position)}}
+                                  </div>
+                                </div>
+                                <div class="col-sm-1">
+                                  <div class="form-group menu-item">
+                                    <button type="button" style="padding-left:7px; padding-right:7px; margin-top: 0px; float:left;" class="btn"><i class="icon-ic_close_24px" aria-hidden="true" {{action "deleteOption" menu_items item.position option.position}}></i>
+                              </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      {{/each}}
+                      <div class="row">
+                        <div class="col-sm-10 col-sm-offset-1">
+                          <button style="color: #72C8E1;" type="button" class="plus-btn" {{action "addSelection" menu_items item.position option.position}}>+ add selection</button>
+                        </div>
+                      </div>
+                      <br/> {{/each}}
+                    <button type="button" class="plus-btn" {{action "addOption" menu_items item.position}}>+ add additional option</button>
+                  </div>
+                  <div class="footer">
+                    <div class="clearfix">
+                      <div class="btn-group pull-left" role="group">
+                        <button type="button" class="btn btn-footer-toggle" {{action "move" menu_items item.position -1}}><i class="fa fa-angle-up" aria-hidden="true"></i></button>
+                        <button type="button" class="btn btn-footer-toggle" {{action "move" menu_items item.position 1}}><i class="fa fa-angle-down" aria-hidden="true"></i></button>
+                      </div>
+                      <div class="btn-group pull-right" role="group">
+                        <button type="button" class="btn btn-footer" {{action "addSubItem" menu_items item.position}}><i class="icon-plus" aria-hidden="true"></i>
+                      </button>
+                        {{#if collapsible.active}}
+                          <button type="button" class="btn btn-footer-toggle" {{action "toggleCollapse" collapsible.active}}><i class="fa fa-angle-up" aria-hidden="true"></i>
+                      </button>
+                        {{else}}
+                          <button type="button" class="btn btn-footer-toggle" {{action "toggleCollapse" collapsible.active}}><i class="fa fa-angle-down" aria-hidden="true"></i>
+                      </button>
+                        {{/if}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {{else if (if_eq item.type "sub-item")}}
+                <div id="card-{{item.position}}" class="cc-card popout">
+                  <div class="header">
+                    <div class="row">
+                      <div class="col-sm-3"></div>
+                      <div class="col-sm-6">
+                        <div align="center">
+                          <i class="material-icons" style="font-size: 24px;">drag_handle</i>
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <a href="#" class="pull-right" {{action "deleteItem" menu_items item.position}}><i style="font-size: 24px;" class="icon-ic_close_24px"></i></a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="content">
+                    <div class="row" style="margin-left: 10px; padding-left: 25px; border-left: 2px solid #C4C4C4;">
+                      <div class="col-sm-6">
+                        <form id="{{item.position}}-form" class="form-horizontal" {{action "updateItem" menu_items item.position on="submit" }}>
+                          <fieldset>
+                            <div class="form-group menu-item">
+                              {{textarea rows=1 type="text" placeholder="SUB ITEM TITLE" class="form-control input-header" id=(concat item.position '-title') value=item.title keyUp=(action "typeahead" all_products item.position)}}
+                              <ul id="{{item.position}}-products-list" hidden class="list-group" style="padding: 10px; border: 1px solid #f1f1f1; max-height: 150px; overflow: scroll;">
+                                {{#if (isempty products)}}
+                                  <li class="list-group-item" {{action "addProduct" item.position menu.business.id all_products menu_items on="click"}}><a href="#" style="color: #246BC6; font-size: 16px;">+ add <b>'{{item.title}}'</b> to your products list</a></li>
+                                {{else}}
+                                  <li class="list-group-item" {{action "addProduct" item.position menu.business.id all_products menu_items on="click"}}><a href="#" style="color: #246BC6; font-size: 16px;">+ add <b>'{{item.title}}'</b> to your products list</a></li>
+                                  {{#each products as |product|}}
+                                    <li class="list-group-item" {{action "addSelectedItem" product.name item.position menu_items on="click"}}><a href="#" style="color: #222222; font-size: 16px;">{{product.title}}</a></li>
+                                  {{/each}}
+                                {{/if}}
+                              </ul>
+                            </div>
+                            <div class="form-group menu-item">
+                              {{textarea rows=1 type="text" placeholder="DESCRIPTION" class="form-control input-sub-header" id=(concat item.position '-description') value=item.description focus-out=(action "focusOut" item.position)}}
+                            </div>
+                            {{input id=(concat price.position "-product") value=item.product type="hidden"}}
+                          </fieldset>
+                        </form>
+                      </div>
+                      <div class="col-sm-6">
+                        <br/>
+                        <br/>
+                        {{#each item.prices as |price|}}
+                          {{#if (if_last price.position item.prices)}}
+                            <form class="form-inline pull-right">
+                              <div class="form-group menu-item">
+                                <label for="{{price.position}}-price-description"><i class="material-icons" style="font-size: 14px;color: #777;">label</i>
+                          </label> {{input id=(concat price.position "-price-description") value=price.description placeholder='Label' class='form-control price-description-input' type='text' focus-out=(action "updatePriceDescription"
+                                menu_items item.position price.position)}}
+                              </div>
+                              <div class="form-group menu-item">
+                                {{input id=(concat price.position "-price-amount") value=price.amount placeholder='Price' class='form-control price-amount-input' type='text' focus-out=(action "updatePriceAmount" menu_items item.position price.position)}}
+                              </div>
+                              <button type="button" class="btn btn-price" {{action "addPrice" menu_items item.position}}><i class="material-icons">add</i>
+                        </button>
+                            </form>
+                          {{else}}
+                            <form class="form-inline pull-right">
+                              <div class="form-group menu-item">
+                                <label for="{{price.position}}-price-description"><i class="material-icons" style="font-size: 14px;color: #777;">label</i>
+                          </label> {{input id=(concat price.position "-price-description") value=price.description placeholder='Label' class='form-control price-description-input' type='text' focus-out=(action "updatePriceDescription"
+                                menu_items item.position price.position)}}
+                              </div>
+                              <div class="form-group menu-item">
+                                {{input id=(concat price.position "-price-amount") value=price.amount placeholder='Price' class='form-control price-amount-input' type='text' focus-out=(action "updatePriceAmount" menu_items item.position price.position)}}
+                              </div>
+                              <button type="button" class="btn btn-price" {{action "deletePrice" menu_items item.position}}><i class="material-icons">close</i>
+                        </button>
+                            </form>
+                          {{/if}}
+                        {{/each}}
+                      </div>
+                    </div>
+                    <div id="options-summary" hidden class="row">
+                      <br/>
+                      <div class="col-sm-12" style="margin-left: -15px; color: #7C7C7C;">
+                        {{#each item.options as |option|}}
+                          <strong>{{option.type}}</strong> {{option.description}} ({{option.amount}})
+                          <br/> {{/each}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="{{collapsible.state}}">
+                    {{#each item.options as |option|}}
+                      <form id="{{item.position}}{{option.position}}-option-form" {{action "updateOption" menu_items item.position option.position on="submit" }}>
+                        <div class="row">
+                          <div class="col-sm-2">
+                            <div class="form-group">
+                              <select class="form-control price-select" id="{{item.position}}{{option.position}}-option-type" {{action "focusOutOption" item.position option.position on='change' }}>
+                            <option disabled>Select Option</option>
+                            <option value="{{option.type}}">{{option.type}}</option>
+                            <option disabled>──</option>
+                            <option value="addition">addition</option>
+                            <option value="choice">choice</option>
+                            <option value="combo">combo</option>
+                          </select>
+                            </div>
+                          </div>
+                          <div class="col-sm-7">
+                            <div class="form-group menu-item">
+                              {{input id=(concat item.position (concat option.position "-option-description")) value=option.description placeholder='Label' class='form-control price-select' type='text' focus-out=(action "focusOutOption" item.position option.position)}}
+                            </div>
+                          </div>
+                          <div class="col-sm-2">
+                            <div class="form-group menu-item">
+                              {{input id=(concat item.position (concat option.position "-option-amount")) value=option.amount placeholder='Price' class='form-control price-select' type='text' focus-out=(action "focusOutOption" item.position option.position)}}
+                            </div>
+                          </div>
+                          <div class="col-sm-1">
+                            <div class="form-group menu-item">
+                              <button type="button" style="padding-left:7px; padding-right:7px; margin-top: 0px; float:left;" class="btn"><i class="icon-ic_close_24px" aria-hidden="true" {{action "deleteOption" menu_items item.position option.position}}></i>
+                          </button>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                      {{#each option.selection as |selection|}}
+                        <div class="row">
+                          <div class="col-sm-10 col-sm-offset-1">
+                            <form id="{{item.position}}{{option.position}}{{selection.position}}-selection-form" {{action "updateSelection" menu_items item.position option.position selection.position on="submit" }}>
+                              <div class="row">
+                                <div class="col-sm-9">
+                                  <div class="form-group menu-item">
+                                    {{input id=(concat item.position (concat option.position (concat selection.position "-selection-description"))) value=selection.description placeholder='Selection' class='form-control price-select' type='text' focus-out=(action "focusOutSelection" item.position
+                                    option.position selection.position)}}
+                                  </div>
+                                </div>
+                                <div class="col-sm-2">
+                                  <div class="form-group menu-item">
+                                    {{input id=(concat item.position (concat option.position (concat selection.position "-selection-amount"))) value=selection.amount placeholder='Price' class='form-control price-select' type='text' focus-out=(action "focusOutSelection" item.position option.position
+                                    selection.position)}}
+                                  </div>
+                                </div>
+                                <div class="col-sm-1">
+                                  <div class="form-group menu-item">
+                                    <button type="button" style="padding-left:7px; padding-right:7px; margin-top: 0px; float:left;" class="btn"><i class="icon-ic_close_24px" aria-hidden="true" {{action "deleteOption" menu_items item.position option.position}}></i>
+                              </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      {{/each}}
+                      <div class="row">
+                        <div class="col-sm-10 col-sm-offset-1">
+                          <button style="color: #72C8E1;" type="button" class="plus-btn" {{action "addSelection" menu_items item.position option.position}}>+ add selection</button>
+                        </div>
+                      </div>
+                      <br/> {{/each}}
+                    <button type="button" class="plus-btn" {{action "addOption" menu_items item.position}}>+ add additional option</button>
+                  </div>
+                  <div class="footer">
+                    <div class="clearfix">
+                      <div class="btn-group pull-left" role="group">
+                        <button type="button" class="btn btn-footer-toggle" {{action "move" menu_items item.position -1}}><i class="fa fa-angle-up" aria-hidden="true"></i></button>
+                        <button type="button" class="btn btn-footer-toggle" {{action "move" menu_items item.position 1}}><i class="fa fa-angle-down" aria-hidden="true"></i></button>
+                      </div>
+                      <div class="btn-group pull-right" role="group">
+                        <button type="button" class="btn btn-footer" {{action "deleteProduct" item.position item.product menu_items all_products}}><i class="material-icons" aria-hidden="true">delete</i></button>
+                        {{#if collapsible.active}}
+                          <button type="button" class="btn btn-footer-toggle" {{action "toggleCollapse" collapsible.active}}><i class="fa fa-angle-up" aria-hidden="true"></i>
+                      </button>
+                        {{else}}
+                          <button type="button" class="btn btn-footer-toggle" {{action "toggleCollapse" collapsible.active}}><i class="fa fa-angle-down" aria-hidden="true"></i>
+                      </button>
+                        {{/if}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {{else if (if_eq item.type "note")}}
+                <div id="card-{{item.position}}" class="cc-card popout">
+                  <div class="header">
+                    <div class="row">
+                      <div class="col-sm-3"></div>
+                      <div class="col-sm-6">
+                        <div align="center">
+                          <i class="material-icons" style="font-size: 24px;">drag_handle</i>
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <a href="#" class="pull-right" {{action "deleteItem" menu_items item.position}}><i style="font-size: 24px;" class="icon-ic_close_24px"></i></a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="content">
+                    <div class="row" style="margin-top: 0px; margin-bottom: 30px;">
+                      <div class="col-sm-12">
+                        <form id="{{item.position}}-form" class="form-horizontal" {{action "updateNote" menu_items item.position on="submit" }}>
+                          <div class="form-group menu-item">{{input type="text" placeholder="PLACE YOUR NOTE HERE" class="form-control input-header" id=(concat item.position '-note') value=item.note focus-out=(action "focusOut" item.position)}}</div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {{/if}}
+            {{/draggable-item}}
+          {{else}}
+            {{#draggable-dropzone content=item.position dropped="drop" }}
+              {{#if (if_eq item.type "item")}}
+                <div id="card-{{item.position}}" class="cc-card" {{action "clickproducts" item.position products}}>
+                  <div class="content">
+                    <br/>
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <form id="{{item.position}}-form" class="form-horizontal" {{action "updateItem" menu_items item.position on="submit"}}>
+                          <div class="form-group menu-item">
+                            {{input type="text" placeholder="ITEM TITLE" class="form-control input-header" id=(concat item.position '-title') value=item.title focus-out=(action "focusOut" item.position)}}
+                          </div>
+                          <div class="form-group menu-item">
+                            {{input type="text" placeholder="DESCRIPTION" class="form-control input-sub-header" id=(concat item.position '-description') value=item.description focus-out=(action "focusOut" item.position)}}
+                          </div>
+                          <div class="form-group menu-item">
+                            {{input type="hidden" id=(concat item.position '-product') value=item.product}}
+                          </div>
+                        </form>
+                      </div>
+                      <div class="col-sm-6">
+                        <br/><br/>
+                        {{#each item.prices as |price|}}
+                          <form class="form-inline pull-right">
+                            <div class="form-group menu-item">
+                              {{input value=price.description class='form-control price-description-input' type='text'}}
+                            </div>
+                            <div class="form-group menu-item">
+                              {{input value=price.amount class='form-control price-amount-input' type='text'}}
+                            </div>
+                          </form>
+                        {{/each}}
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-12" style="margin-left: -15px; color: #7C7C7C;">
+                        {{#each item.options as |option|}}
+                          <strong>{{option.type}}</strong> {{option.description}} ({{option.amount}})<br/>
+                        {{/each}}
+                      </div>
+                    </div>
+                  </div>
+                  <br/>
+                </div>
+                {{else if (if_eq item.type "group")}}
+                <br/><br/>
+                <div id="card-{{item.position}}" class="cc-card" {{action "clickproducts" item.position products}}>
+                  <div class="content">
+                    <br/>
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <form id="{{item.position}}-form" class="form-horizontal" {{action "updateItem" menu_items item.position on="submit"}}>
+                          <div class="form-group menu-item">
+                            {{input type="text" placeholder="CATEGORY TITLE" class="form-control input-category" id=(concat item.position '-title') value=item.title focus-out=(action "focusOut" item.position)}}
+                          </div>
+                          <div class="form-group menu-item">
+                            {{input type="text" placeholder="DESCRIPTION" class="form-control input-sub-header" id=(concat item.position '-description') value=item.description focus-out=(action "focusOut" item.position)}}
+                          </div>
+                          <div class="form-group menu-item">
+                            {{input type="hidden" id=(concat item.position '-product') value=item.product}}
+                          </div>
+                        </form>
+                      </div>
+                      <div class="col-sm-6">
+                        <br/><br/>
+                        {{#each item.prices as |price|}}
+                          <form class="form-inline pull-right">
+                            <div class="form-group menu-item">
+                              {{input value=price.description class='form-control price-description-input' type='text'}}
+                            </div>
+                            <div class="form-group menu-item">
+                              {{input value=price.amount class='form-control price-amount-input' type='text'}}
+                            </div>
+                          </form>
+                        {{/each}}
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-12" style="margin-left: -15px; color: #7C7C7C;">
+                        {{#each item.options as |option|}}
+                          <strong>{{option.type}}</strong> {{option.description}} ({{option.amount}})<br/>
+                        {{/each}}
+                      </div>
+                    </div>
+                  </div>
+                  <br/>
+                </div>
+                {{else if (if_eq item.type "sub-group")}}
+                <div id="card-{{item.position}}" class="cc-card" {{action "clickproducts" item.position products}}>
+                  <div class="content">
+                    <br/>
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <div style="margin-left: -10px; padding-left: 50px; border-left: 2px solid #F96160;">
+                          <form id="{{item.position}}-form" class="form-horizontal" {{action "updateItem" menu_items item.position on="submit"}}>
+                            <div class="form-group menu-item">
+                              {{input type="text" placeholder="SUB CATEGORY TITLE" class="form-control input-category" id=(concat item.position '-title') value=item.title focus-out=(action "focusOut" item.position)}}
+                            </div>
+                            <div class="form-group menu-item">
+                              {{input type="text" placeholder="DESCRIPTION" class="form-control input-sub-header" id=(concat item.position '-description') value=item.description focus-out=(action "focusOut" item.position)}}
+                            </div>
+                            <div class="form-group menu-item">
+                              {{input type="hidden" id=(concat item.position '-product') value=item.product}}
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <br/><br/>
+                        {{#each item.prices as |price|}}
+                          <form class="form-inline pull-right">
+                            <div class="form-group menu-item">
+                              {{input value=price.description class='form-control price-description-input' type='text'}}
+                            </div>
+                            <div class="form-group menu-item">
+                              {{input value=price.amount class='form-control price-amount-input' type='text'}}
+                            </div>
+                          </form>
+                        {{/each}}
+                      </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                      <div class="col-sm-12" style="margin-left: -15px; color: #7C7C7C;">
+                        {{#each item.options as |option|}}
+                          <strong>{{option.type}}</strong> {{option.description}} ({{option.amount}})<br/>
+                        {{/each}}
+                      </div>
+                    </div>
+                  </div>
+                  <br/>
+                </div>
+                {{else if (if_eq item.type "sub-item")}}
+                <div id="card-{{item.position}}" class="cc-card" {{action "clickproducts" item.position products}}>
+                  <div class="content">
+                    <br/>
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <div style="margin-left: -10px; padding-left: 50px; border-left: 2px solid #F96160;">
+                          <form id="{{item.position}}-form" class="form-horizontal" {{action "updateItem" menu_items item.position on="submit"}}>
+                            <div class="form-group menu-item">
+                              {{input type="text" placeholder="SUB ITEM TITLE" class="form-control input-header" id=(concat item.position '-title') value=item.title focus-out=(action "focusOut" item.position)}}
+                            </div>
+                            <div class="form-group menu-item">
+                              {{input type="text" placeholder="DESCRIPTION" class="form-control input-sub-header" id=(concat item.position '-description') value=item.description focus-out=(action "focusOut" item.position)}}
+                            </div>
+                            <div class="form-group menu-item">
+                              {{input type="hidden" id=(concat item.position '-product') value=item.product}}
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <br/><br/>
+                        {{#each item.prices as |price|}}
+                          <form class="form-inline pull-right">
+                            <div class="form-group menu-item">
+                              {{input value=price.description class='form-control price-description-input' type='text'}}
+                            </div>
+                            <div class="form-group menu-item">
+                              {{input value=price.amount class='form-control price-amount-input' type='text'}}
+                            </div>
+                          </form>
+                        {{/each}}
+                      </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                      <div class="col-sm-12" style="margin-left: -15px; color: #7C7C7C;">
+                        {{#each item.options as |option|}}
+                          <strong>{{option.type}}</strong> {{option.description}} ({{option.amount}})<br/>
+                        {{/each}}
+                      </div>
+                    </div>
+                  </div>
+                  <br/>
+                </div>
+                {{else if (if_eq item.type "note")}}
+                <div id="card-{{item.position}}" class="cc-card" {{action "clickproducts" item.position products}}>
+                  <div class="content">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <br/><br/>
+                        <form id="{{item.position}}-form" class="form-horizontal" style="font-size: 12px;" {{action "updateNote" menu_items item.position on="submit"}}>
+                          <div class="form-group menu-item">{{input type="text" placeholder="PLACE YOUR NOTE HERE" class="form-control input-header" value=item.note}}</div>
+                        </form>
+                        <br/>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {{/if}}
+            {{/draggable-dropzone}}
+          {{/if}}
+        {{/each}}
+
+
+      </div>
+      <div class="col-md-2" style="padding: 0;">
+        <div id="action-bar" class="btn-group-vertical" role="group" aria-label="...">
+          <button type="button" style="padding-top: 15px; padding-bottom: 15px;" class="btn btn-sm btn-raised btn-default" {{action "addItem" menu_items active}}><i class="fa fa-plus" aria-hidden="true"></i></button>
+          <button type="button" style="padding-top: 15px; padding-bottom: 15px;" class="btn btn-sm btn-raised btn-default" {{action "addCategory" menu_items}}><i class="fa fa-share-alt" aria-hidden="true"></i></button>
+          <button type="button" style="padding-top: 15px; padding-bottom: 15px;" class="btn btn-sm btn-raised btn-default" {{action "addNote" menu_items active}}><i class="fa fa-bars" aria-hidden="true"></i></button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+</div>
+
+<br/><br/>

@@ -1,0 +1,79 @@
+<div class="bg">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-4"></div>
+			<div class="col-md-4">
+				<div class="auth-form-login">
+					<div class="auth-logo">
+						<img src="images/mc-logo.png" alt="Image" class="block-center img-rounded">
+						<h4 style="color: #ffffff; font-size: 18px;">ADD YOUR PERSONAL INFO</h4>
+					</div>
+
+					<form id="createUserForm" class=" auth-form auth-form-register" {{action "createUser" on="submit"}}>
+						<div class="form-group">
+							<input type="text" class="form-control login" id="first_name" placeholder="First Name">
+						</div>
+						<div class="form-group">
+							<input type="text" class="form-control login" id="last_name" placeholder="Last Name">
+						</div>
+						<div class="form-group">
+							<input type="email" class="form-control login" id="email" placeholder="Email">
+						</div>
+						<div class="form-group">
+							<input type="email" class="form-control login" id="email_confirm" placeholder="Confirm Email">
+						</div>
+
+						<div class="test-place-autocomplete-container" data-google-auto="{{googleAuto}}">
+							<div class="form-group">
+								<div class="inner-addon left-addon">
+									<i class="icon-location-1 pull-right" aria-hidden="true" style="font-size: 20px; margin-top: 6px; margin-bottom: -50px; padding-right: 20px;"></i> {{place-autocomplete-field value= name handlerController= this inputClass= 'form-control login'
+									types='establishment' focusOutCallback="done" placeChangedCallback="placeChanged" placeholder="Find Location" }}
+								</div>
+
+							</div>
+						</div>
+
+						{{input value=formatted_address class='form-control' type="hidden"}} {{input value=place_id class='form-control' type="hidden"}} {{input value=line1 class='form-control' type="hidden"}} {{input value=city class='form-control' type="hidden"}} {{input value=region
+						class='form-control' type="hidden"}} {{input value=postal_code class='form-control' type="hidden"}} {{input value=country class='form-control' type="hidden"}} {{input value=opening_hours class='form-control' type="hidden"}} {{input value=name class='form-control'
+						type="hidden"}} {{input value=website class='form-control' type="hidden"}} {{input value=formatted_phone_number class='form-control' type="hidden"}} {{input value=international_phone_number class='form-control' type="hidden"}} {{input value=lat
+						class='form-control' type="hidden"}} {{input value=lng class='form-control' type="hidden"}}
+
+						<div class="form-group" style="margin-top: 10px;">
+							<input type="checkbox" class="checkbox" id="terms_accepted" checked= {{isChecked}} onclick= {{action "checked" value="target.checked"}} />
+							<label class="terms-accepted">I agree to the menuCLOUD terms and service agreement</label>
+						</div>
+
+						<button type="submit" id="sign-up" disabled style="margin-top: 10px;" class="btn btn-warning btn-block">SIGN UP</button>
+					</form>
+				</div>
+				<div class="col-md-4"></div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="verifyModal" style="margin-top: 150px;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div align="center">
+						<br/><br/><br/>
+						<img width="100px;" src="images/checkmark.png">
+						<br/><br/>
+						<h4 style="color:#FB6560;">VERIFY YOUR ACCOUNT</h4>
+						<p style="margin-top: 20px; font-size: 18px;">A link has been sent to your email address ({{email_address}}).<br/> If you can not find the link check your spam folder.</p>
+						<div class="row">
+							<div class="col-md-6 col-md-offset-3">
+								<button style="margin-top: 10px;" class="btn btn-warning btn-block" {{action "signIn"}}>SIGN IN</button>
+								<div class="clearfix">
+									<a href="#" class="pull-right" {{action "resend" email_address}}>Resend Email</a>
+								</div>
+							</div>
+						</div>
+						<br/><br/><br/><br/><br/>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

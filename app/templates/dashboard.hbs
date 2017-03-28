@@ -1,0 +1,74 @@
+{{dashboard-sidebar}} {{ryan-preloader}}
+
+<div id="main" style="background-color: #ffffff;">
+  <div id="subnav" style="margin-top: 0;"></div>
+  {{dashboard-topnav}}
+  <div class="container-fluid content">
+    <div style="padding-left: 40px; padding-bottom: 15px; padding-top: 10px;">
+      <img style="width: 200px;" src="images/Logo3.png">
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 custom-padding">
+        <div class="dashboard_menu_card">
+          <div class="dashboard_menu_card_image">
+            <img src="images/dashboard/Menus.png" width="100%" height="auto" />
+            <div class="dashboard_menu_card_text">
+              {{#link-to 'menu.overview'}}
+                <h3 style="margin-top: 0px;"><img src="images/Menu_icon.png" height="75px;" style="padding-bottom: 30px;"><br/>MENUS<br/><small>CREATE YOUR FIRST MENU <i class="icon-right"></i></small></h3>{{/link-to}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-12 custom-padding">
+            <div class="dashboard_restaurant_card">
+              <div class="dashboard_restaurant_image">
+                <img class="img-responsive" src="images/dashboard/Restaurant_Background.png" width="100%" height="auto" />
+                <div class="dashboard_restaurant_card_text">
+                  {{#link-to 'restaurants'}}
+                    <h1><i class="icon-restaurant"></i><br/></h1>
+                    <h3>RESTAURANTS<br/><small>MANAGE YOUR RESTAURANTS <i class="icon-right"></i></small></h3>{{/link-to}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 custom-padding">
+            <div class="dashboard_info_card">
+              <div class="dashboard_info_image">
+                <img class="img-responsive" src="images/dashboard/Learn_Basics.png" width="100%" height="auto" />
+                <div class="dashboard_info_icon">
+                  <i class="icon-help_icon"></i>
+                </div>
+                <div class="dashboard_info_card_text">
+                  {{#link-to 'dashboard'}}
+                    <h3>LEARN THE BASICS</h3>
+                    <h4>LEARN WHAT MENU CLOUD HAS TO OFFER</h4>{{/link-to}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 custom-padding">
+            <div class="dashboard_info_card">
+              <div class="dashboard_info_image">
+                <img class="img-responsive" src="images/dashboard/Need_help.png" width="100%" height="auto" />
+                <div class="dashboard_info_icon">
+                  <i class="icon-help_icon"></i>
+                </div>
+                <div class="dashboard_info_card_text">
+                  {{#link-to 'dashboard'}}
+                    <h3>NEED SOME HELP?</h3>
+                    <h4>GET IN TOUCH WITH OUR SUPPORT</h4>{{/link-to}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

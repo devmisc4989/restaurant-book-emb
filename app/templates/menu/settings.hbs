@@ -1,0 +1,71 @@
+ {{dashboard-sidebar}}
+
+<div id="main" style="padding-top: 120px;">
+  {{dashboard-topnav}}
+  <div id="subnav" class="navbar navbar-fixed-top subnav" role="navigation">
+    <div class="navbar-inner">
+      <div class="container-fluid">
+
+        <div class="row">
+          <div class="col-sm-3">
+            <ul class="nav nav-pills hidden-xs">
+              <li role="presentation">
+                {{#link-to 'menu.overview' class="linkback" }}<i class="icon-left" aria-hidden="true"></i> Menu Overview{{/link-to}}
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-sm-6">
+            <div align="center">
+              <ul class="nav nav-pills">
+                <li role="presentation"><a href="#"><i class="icon-user" aria-hidden="true"></i> Editor</a></li>
+                <li role="presentation"><a href="#"><i class="fa fa-clone" aria-hidden="true"></i> Designer</a></li>
+                <li role="presentation" class="active"><a href="#"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-sm-3"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid content">
+  <div class="row">
+    <div class="col-sm-6 col-sm-offset-3">
+      <hr style="border-top: 2px solid rgba(0,0,0,0.1);" />
+      <div class="row">
+        <div class="col-sm-12 profile-sidebar">
+          <h4>MENU SETTINGS</h4>
+        </div>
+        <br/><br/>
+        <div class="col-sm-10 col-sm-offset-1">
+          <form id="myForm" {{action "selectType" menu.id on="change"}}>
+            <div class="form-group">
+              <div class="radio radio-primary">
+                <label>
+                  <input type="radio" name="optionsRadios" id="a_la_carte" value="false">
+                    A La Carte
+                </label>
+              </div>
+              <div class="radio radio-primary">
+                <label>
+                  <input type="radio" name="optionsRadios" id="fixed_price" value="true">
+                    Fixed Price
+                </label>
+              </div>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h2>Hello {{menu}}</h2>
+
+<br/><br/>

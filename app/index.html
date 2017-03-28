@@ -1,0 +1,67 @@
+
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>menuCLOUD - One Login for Everything Menu</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    {{content-for "head"}}
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,200,300,400,500,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,400" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="{{rootURL}}assets/vendor.css">
+    <link rel="stylesheet" href="{{rootURL}}assets/menucloud.css">
+    <link rel="stylesheet" href="{{rootURL}}css/fontello.css">
+
+    {{content-for "head-footer"}}
+  </head>
+  <body>
+
+
+    {{content-for "body"}}
+
+    {{content-for "body-footer"}}
+
+		<script src="{{rootURL}}assets/vendor.js"></script>
+		<script src="{{rootURL}}assets/menucloud.js"></script>
+
+    <script type="text/javascript" src="https://noocleus.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/y5xx7a/100018/c/1000.0.11/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-US&collectorId=84f3d561"></script>
+    <script type="text/javascript">window.ATL_JQ_PAGE_PROPS =  {
+    "triggerFunction": function(showCollectorDialog) {
+        //Requires that jQuery is available!
+        jQuery("#myCustomTrigger").click(function(e) {
+            e.preventDefault();
+            showCollectorDialog();
+        });
+    }};</script>
+
+    <script>
+
+      $(document).ready(function() {
+
+        $.material.init();
+
+        autosize($('textarea'));
+
+        setTimeout(function(){
+          $('body').addClass('loaded');
+        }, 2000);
+      });
+
+    </script>
+
+
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $('.collapsible').collapsible();
+      });
+    </script>
+
+  </body>
+</html>

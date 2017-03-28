@@ -1,0 +1,36 @@
+<div class="bg">
+	<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-4"></div>
+		<div class="col-md-4">
+			<div class="auth-form-login">
+				<div class="auth-logo">
+					<img src="images/mc-logo.png" alt="Image" class="block-center img-rounded">
+          <h4 style="color: #ffffff; margin-top: 60px;">CHOOSE YOUR PASSWORD</h4>
+				</div>
+				<form id="loginForm" class="auth-form auth-form-reset" {{action "verifyAccount" on="submit"}}>
+					<div class="form-group">
+            <input type="password" class="form-control" id="password" placeholder="Password">
+					</div>
+					<div class="form-group">
+            <input type="password" class="form-control" id="password_confirm" placeholder="Confirm Password">
+					</div>
+
+          <div class="form-group">
+					<input type="hidden" class="form-control" id="verification" value="{{verification}}">
+					</div>
+					<div class="form-group" style="margin-top: 10px;">
+						<input type="checkbox" class="checkbox"
+							id="terms_accepted"
+							checked={{isChecked}}
+							onclick={{action "checked" value="target.checked"}} />
+						<label class="terms-accepted">Sign up to receive news about the service and stay updated on future releases</label>
+					</div>
+					<button type="submit" id="sign-up" style="margin-top: 15px;" class="btn btn-raised btn-warning btn-block">SIGN IN</button>
+				</form>
+			</div>
+		</div>
+		<div class="col-md-4"></div>
+	</div>
+	</div>
+</div>

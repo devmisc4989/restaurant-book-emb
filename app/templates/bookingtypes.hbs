@@ -1,0 +1,70 @@
+{{dashboard-sidebar}}
+
+<div id="main">
+  {{dashboard-topnav}}
+  <div id="subnav" class="navbar navbar-fixed-top subnav" role="navigation">
+    <div class="navbar-inner">
+      <div class="container-fluid">
+        <table width="100%">
+          <tr>
+            <td>
+              <div class="btn-group">
+                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  {{active_restaurant.name}} <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                  {{#each restaurants as |restaurant|}}
+                    <li><a href="#">{{restaurant.name}}</a></li>
+                  {{/each}}
+                </ul>
+              </div>
+            </td>
+            <td><button type="button" class="btn btn-raised btn-default pull-right" {{action 'bookingtypeModal'}}>NEW BOOKING TYPE</button></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid content">
+    <div class="row">
+
+      <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="createMenu" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 style="text-align:center; color: #FC7C77;" class="modal-title" id="myModalLabel">CREATE MENU</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" {{action "createMenu" on="submit"}}>
+          <fieldset>
+            <div class="form-group col-md-12">
+              <label class="control-label">Title</label>
+              <input type="text" class="form-control" id="title">
+            </div>
+            <div class="form-group col-md-12">
+              <label class="control-label">Description</label>
+              <textarea class="form-control" id="description" rows="3"></textarea>
+            </div>
+            <input type="hidden" class="form-control" value="{{active_restaurant.id}}" id="business_id">
+            <div align="center">
+              <button type="submit" class="btn btn-raised btn-info">CREATE MENU</button>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

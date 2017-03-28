@@ -1,0 +1,145 @@
+{{dashboard-sidebar}}
+
+<div id="main" style="padding-top: 120px;">
+  {{dashboard-topnav}}
+  <div id="subnav" class="navbar navbar-fixed-top subnav" role="navigation">
+    <div class="navbar-inner">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-3 col-md-3">
+            <ul class="nav nav-pills hidden-xs">
+              <li role="presentation">
+                {{#link-to 'restaurants' class="linkback" }}<i class="icon-left" aria-hidden="true"></i> Restaurants{{/link-to}}
+              </li>
+            </ul>
+          </div>
+          <div class="col-sm-6">
+            <div align="center">
+              <ul class="nav nav-pills">
+                <li role="presentation" class="active"><a href="#"><i class="icon-user" aria-hidden="true"></i> Contact</a></li>
+                <li role="presentation"><a href="#" {{action "gotoAccess" restaurant.id}}><i class="fa fa-clone" aria-hidden="true"></i> Access</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-sm-3"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid content">
+    <div class="row">
+
+      <div class="col-md-12">
+        <div class="clearfix">
+          <button class="btn btn-raised btn-info pull-right" {{action "submit"}}>Save</button>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-md-offset-3">
+        <hr style="border-top: 2px solid rgba(0,0,0,0.1); margin-top: 50px; margin-bottom: 10px;" />
+        <form id="businessUpdateForm" class="form-horizontal" {{action "updateBusiness" on="submit"}}>
+          <div class="row">
+            <div class="col-sm-2">
+              <legend>Name</legend>
+            </div>
+            <div class="form-group col-sm-9">
+              <label for="inputEmail" class="control-label profile-label">Name</label>
+              <input type="text" class="form-control profile" id="name" value="{{restaurant.name}}">
+            </div>
+          </div>
+          <hr style="border-top: 2px solid rgba(0,0,0,0.1); margin-bottom: 10px; margin-top: 50px;" />
+          <div class="row">
+            <div class="col-sm-2">
+              <legend>Location</legend>
+            </div>
+            <br/>
+            <div class="col-sm-9">
+              <div class="form-group">
+                <label for="inputEmail" class="control-label profile-label">Line 1</label>
+                <input type="text" class="form-control profile" id="line_1" value="{{restaurant.address.line_1}}">
+              </div>
+              <div class="form-group">
+                <label for="inputEmail" class="control-label profile-label">Line 2</label>
+                <input type="text" class="form-control profile" id="line_2" value="{{restaurant.address.line_2}}">
+              </div>
+              <div class="form-group">
+                <label for="inputEmail" class="control-label profile-label">City</label>
+                <input type="text" class="form-control profile" id="city" value="{{restaurant.address.city}}">
+              </div>
+              <div class="form-group">
+                <label for="inputEmail" class="control-label profile-label">Region</label>
+                <input type="text" class="form-control profile" id="region" value="{{restaurant.address.region}}">
+              </div>
+              <div class="form-group">
+                <label for="inputEmail" class="control-label profile-label">Country</label>
+                <input type="text" class="form-control profile" id="country" value="{{restaurant.address.country}}">
+              </div>
+              <div class="form-group">
+                <label for="inputEmail" class="control-label profile-label">Postal Code</label>
+                <input type="text" class="form-control profile" id="postal_code" value="{{restaurant.address.postal_code}}">
+              </div>
+            </div>
+          </div>
+          <hr style="border-top: 2px solid rgba(0,0,0,0.1); margin-bottom: 10px; margin-top: 50px;" />
+          <div class="row">
+            <div class="col-sm-2">
+              <legend>Contact</legend>
+            </div>
+            <div class="col-sm-9">
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-sm-1">
+                    <i class="fa fa-envelope" aria-hidden="true" style="font-size: 20px; color: #FB6560; padding-top: 45px; padding-right: 0;"></i>
+                  </div>
+                  <div class="col-sm-11">
+                    <label for="inputEmail" class="control-label profile-label">Email</label>
+                    <input type="text" class="form-control profile" id="email" value="{{restaurant.email}}">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-sm-1">
+                    <i class="fa fa-phone" aria-hidden="true" style="font-size: 20px; color: #FB6560; padding-top: 45px; padding-right: 0;"></i>
+                  </div>
+                  <div class="col-sm-11">
+                    <label for="inputEmail" class="control-label profile-label">Phone</label>
+                    <input type="text" class="form-control profile" id="phone" value="{{restaurant.phone}}">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-sm-1">
+                    <i class="fa fa-window-maximize" aria-hidden="true" style="font-size: 20px; color: #FB6560; padding-top: 45px; padding-right: 0;"></i>
+                  </div>
+                  <div class="col-sm-11">
+                    <label for="inputEmail" class="control-label profile-label">Website</label>
+                    <input type="text" class="form-control profile" id="website" value="{{restaurant.website}}">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr style="border-top: 2px solid rgba(0,0,0,0.1); margin-bottom: 10px; margin-top: 50px;" />
+          <div class="row">
+            <div class="col-sm-2">
+              <legend>Description</legend>
+            </div>
+            <div class="col-sm-9">
+              <div class="form-group">
+                <label for="textArea" class="control-label profile-label">Business Description</label>
+                <textarea class="form-control profile" rows="1" id="textArea">{{restaurant.description}}</textarea>
+              </div>
+            </div>
+          </div>
+          <input type="hidden" class="form-control" id="id" value="{{restaurant.id}}">
+        </form>
+        <br/><br/>
+      </div>
+    </div>
+  </div>
+  <!-- end container-fluid -->
+
+</div>

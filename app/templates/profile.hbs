@@ -1,0 +1,110 @@
+{{dashboard-sidebar}}
+
+<div id="main" style="padding-top: 120px;">
+  {{dashboard-topnav}}
+  <div id="subnav" class="navbar navbar-fixed-top subnav" role="navigation">
+    <div class="navbar-inner">
+      <div class="container-fluid">
+
+        <div class="row">
+          <div class="col-sm-3">
+            <ul class="nav nav-pills">
+              <li role="presentation">
+                {{#link-to 'dashboard' class="linkback" }}<i class="icon-left" aria-hidden="true"></i> Dashboard{{/link-to}}
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-sm-6">
+
+
+            <div align="center">
+              <ul class="nav nav-pills">
+                <li role="presentation" class="active">
+                  {{#link-to 'profile'}}<i class="icon-user" aria-hidden="true"></i> Profile{{/link-to}}
+                </li>
+                <li role="presentation">
+                  {{#link-to 'managed-apps'}}<i class="fa fa-clone" aria-hidden="true"></i> Manage Apps{{/link-to}}
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-sm-3"></div>
+        </div>
+
+
+
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid content">
+    <div class="row" style="margin-top: 25px;">
+      <div class="col-md-6 col-md-offset-3">
+        <hr style="border-top: 2px solid rgba(0,0,0,0.1);" />
+        <div class="row">
+          <div class="col-md-2 profile-sidebar">
+            <h4>PROFILE</h4>
+            <div class="wrap">
+              <img src="images/user-photo-alert.png">
+              <div class="text_over_image">
+                {{substr session.data.user.first_name 0 1}}{{substr session.data.user.last_name 0 1}}
+              </div>
+            </div>
+          </div>
+          <form id="userForm" {{action "updateUser" on="submit"}}>
+            <div class="col-md-8 col-md-offset-1" style="margin-top: 30px; margin-bottom: 30px;">
+              <div class="form-group">
+                <label class="profile-label">First Name</label>
+                <input type="text" class="form-control profile" id="first_name" value="{{session.data.user.first_name}}">
+              </div>
+              <div class="form-group">
+                <label class="profile-label">Last Name</label>
+                <input type="text" class="form-control profile" id="last_name" value="{{session.data.user.last_name}}">
+              </div>
+              <div class="form-group">
+                <label class="profile-label">Email</label>
+                <input type="email" class="form-control profile" id="email" value="{{session.data.user.email}}">
+              </div>
+            </div>
+            <div align="center">
+              <button type="submit" class="btn btn-raised btn-info">UPDATE PROFILE</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <hr style="border-top: 2px solid rgba(0,0,0,0.1); margin-top: 50px;" />
+        <div class="row">
+          <div class="col-md-2 profile-sidebar">
+            <h4>PASSWORD</h4>
+          </div>
+          <form id="userForm" {{action "updatePassword" on="submit"}}>
+            <div class="col-md-8 col-md-offset-1" style="margin-top: 30px; margin-bottom: 30px;">
+              <div class="form-group">
+                <label class="profile-label">Current Password</label>
+                <input type="password" placeholder="Current Password" class="form-control profile" id="password">
+              </div>
+              <div class="form-group">
+                <label class="profile-label">New Password</label>
+                <input type="password" placeholder="New Password" class="form-control profile" id="new_password">
+              </div>
+              <div class="form-group">
+                <label class="profile-label">Confirm New Password</label>
+                <input type="password" placeholder="New Password" class="form-control profile" id="new_password">
+              </div>
+            </div>
+            <div align="center">
+              <button type="submit" class="btn btn-raised btn-info">UPDATE PASSWORD</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- end container-fluid -->
+
+</div>

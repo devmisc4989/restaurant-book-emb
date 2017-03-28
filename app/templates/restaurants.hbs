@@ -1,0 +1,128 @@
+{{dashboard-sidebar}}
+
+<div id="main">
+  <div id="subnav" style="margin-top: 0;"></div>
+  {{dashboard-topnav}}
+
+  <div class="container-fluid content">
+    <div class="row">
+
+      <div class="col-sm-12">
+        <div class="clearfix">
+          <div class="btn-toolbar pull-right" role="toolbar" aria-label="...">
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-raised btn-default" {{action 'addRestaurant'}}>ADD RESTAURANT</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-10 col-md-offset-1 col-sm-12">
+        <div class="col-md-8 col-md-offset-2 col-sm-12" style="padding:0; margin-top: 50px;">
+          {{#each restaurants as |restaurant|}}
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <img width="100%" class="img-responsive" src="images/Restaurant.png">
+                <i class="icon-icon_star1" style="position: absolute; top: 12px; left: 18px; color: #fff; font-size: 16px;"></i>
+                <a href="/restaurant/{{restaurant.id}}"><h3>MANAGE {{restaurant.name}}<i class="icon-right-open-big" style="font-size: 26px;"></i></h3></a>{{!-- {{#link-to 'restaurant' restaurant.id }}
+                <h3>MANAGE {{restaurant.name}}</h3>{{/link-to}} --}}
+              </div>
+              <div class="panel-body" style="padding-top: 7px; padding-bottom: 7px;">
+                <table width="100%;">
+                  <tr>
+                    <td>
+                      <strong style="font-size:16px; font-weight: 300;">{{restaurant.name}}</strong><br/>
+                      <a style="color: #59C0E3; font-size: 12px; font-weight: 200;">{{restaurant.formatted_address}}</a>
+                    </td>
+                    <td style="float:right;">
+                      <div class="btn-group">
+                        <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-ellipsis-v" aria-hidden="true" style="color: #FB6560;"></i>
+                  </button>
+                        <ul class="dropdown-menu" style="width: 80px; padding-left: 0; margin-left: 0; padding-right: 0; margin-right: 0;">
+                          <li style="text-align: center; padding-left: 0; margin-left: 0; padding-right: 0; margin-right: 0;">
+                            <a href="#" style="text-align: center; padding-left: 0; margin-left: 0; padding-right: 0; margin-right: 0;" {{action "deleteRestaurant" restaurant.id}}>Delete</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          {{/each}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+<!-- Modal -->
+<div class="modal restaurantModal fade" id="addRestaurant" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 style="text-align:center; color: #FC7C77;" class="modal-title" id="myModalLabel">ADD RESTAURANT</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" {{action "createRestaurant" on="submit"}}>
+          <fieldset>
+            <div style="height: 400px; overflow: scroll;">
+              <legend>Find Location</legend>
+              <div class="test-place-autocomplete-container" data-google-auto="{{googleAuto}}">
+                <div class="form-group col-md-12">
+                  <label for="inputEmail" class="control-label">Enter Location</label> {{place-autocomplete-field value= model.address handlerController= this inputClass= 'form-control' types='establishment' focusOutCallback="done" placeChangedCallback="placeChanged"
+                  placeholder="" }}
+                </div>
+              </div>
+              <legend>Details</legend>
+              <div class="form-group col-md-12">
+                <label class="control-label">Name</label> {{input value=name class='form-control'}}
+              </div>
+              <div class="form-group col-md-12">
+                <label class="control-label">Description</label> {{input value=description class='form-control'}}
+              </div>
+              <legend>Location</legend>
+              <div class="form-group col-md-12">
+                <label for="inputEmail" class="control-label">Line 1</label> {{input value=line1 class='form-control'}}
+              </div>
+              <div class="form-group col-md-12">
+                <label for="inputEmail" class="control-label">Line 2</label> {{input value=line2 class='form-control'}}
+              </div>
+              <div class="form-group col-md-12">
+                <label for="inputEmail" class="control-label">City</label> {{input value=city class='form-control'}}
+              </div>
+              <div class="form-group col-md-12">
+                <label for="inputEmail" class="control-label">Region</label> {{input value=region class='form-control'}}
+              </div>
+              <div class="form-group col-md-12">
+                <label for="inputEmail" class="control-label">Country</label> {{input value=country class='form-control'}}
+              </div>
+              <div class="form-group col-md-12">
+                <label for="inputEmail" class="control-label">Postal Code</label> {{input value=postal_code class='form-control'}}
+              </div>
+              <legend>Contacts</legend>
+              <div class="form-group col-md-12">
+                <label for="inputEmail" class="control-label">Email</label> {{input value=email class='form-control'}}
+              </div>
+              <div class="form-group col-md-12">
+                <label for="inputEmail" class="control-label">Phone</label> {{input value=phone class='form-control'}}
+              </div>
+              <div class="form-group col-md-12">
+                <label for="inputEmail" class="control-label">Website</label> {{input value=website class='form-control'}}
+              </div>
+            </div>
+            {{input value=opening_hours class='form-control' type="hidden"}} {{input value=formatted_address class='form-control' type="hidden"}} {{input value=place_id class='form-control' type="hidden"}} {{input value=lat class='form-control' type="hidden"}} {{input
+            value=lng class='form-control' type="hidden"}}
+            <div align="center">
+              <button type="submit" class="btn btn-raised btn-info">ADD</button>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+{
+  "name": "menucloud",
+  "dependencies": {
+    "ember": "~2.7.0",
+    "ember-cli-shims": "0.1.1",
+    "ember-qunit-notifications": "0.1.0",
+    "materialize": "^0.97.7",
+    "font-awesome": "^4.7.0",
+    "bootstrap": "^3.3.7",
+    "moment": "^2.15.2",
+    "eonasdan-bootstrap-datetimepicker": "^4.17.43",
+    "toastr": "^2.1.3",
+    "typeahead.js": "^0.11.1",
+    "pdfmake": "^0.1.20",
+    "autosize": "^3.0.18",
+    "keyevent": "^1.0.0",
+    "lodash": "^2.4.0"
+  }
+}

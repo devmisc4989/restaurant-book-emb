@@ -1,0 +1,165 @@
+<div id="navtop">
+  <nav id="topnav" class="navbar navbar-default navbar-fixed-top hidden-xs">
+
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      </div>
+      <h5 id="current-page" class="navbar-brand">{{header}}</h5>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-left" style="padding-top: 0; margin-top: -5px;">
+          <li style="margin-top: 3px;"><a href="#" style="margin-right: 7px; font-size: 15px;" {{action "toggle"}}><i class="icon-menu" aria-hidden="true"></i></a></li>
+          <li style="margin-top: 3px;"><a href="#" style="margin-left: 7px; font-size: 24px;" {{action "fullScreen"}}><i class="icon-resize-full" aria-hidden="true"></i></a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right" style="padding-top: 0; margin-top: -5px;">
+          <li style="margin-top: 2px;"><a href="#" style="font-size: 24px; padding-left: 10px; padding-right: 10px;"><i class="icon-notifications"></i></a></li>
+          <li style="margin-top: 2px;"><a href="javascript:void(0)" id="myCustomTrigger" style="font-size: 24px; padding-left: 10px; padding-right: 10px;"><i class="icon-support"></i></a></li>
+          <li class="dropdown" style="margin-top: 2px;">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="padding-left: 10px;">
+              <div class="wrap"><img src="images/user-photo.png">
+                <div class="text_over_image">{{substr session.data.user.first_name 0 1}}{{substr session.data.user.last_name 0 1}}</div>
+              </div>
+            </a>
+            <ul class="dropdown-menu">
+              <div class="panel-body">
+                <a href="#" class="pull-right" style="font-weight: 300; color: #999;" {{action "lockscreen"}}>LOCK SCREEN <i class="fa fa-unlock-alt" aria-hidden="true"></i></a>
+                <div class="wrap-dropdown"><img src="images/user-photo-popup.png">
+                  <div class="text_over_image_dropdown">{{substr session.data.user.first_name 0 1}}{{substr session.data.user.last_name 0 1}}</div>
+                </div>
+                <h4>{{session.data.user.first_name}} {{session.data.user.last_name}}</h4>
+              </div>
+              <hr style="margin: 0; color: #444;" width="100%" />
+              <li>
+                {{#link-to 'profile'}}Profile{{/link-to}}
+              </li>
+              <li style="margin-bottom: 8px;"><a href="#" {{action "logoutModal"}}>Sign out</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+  </nav>
+
+  <nav id="topnav" class="navbar navbar-default navbar-fixed-top hidden-xs hidden-lg">
+    <div class="hidden-xs hidden-lg" style="min-height: 15px;"></div>
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      </div>
+      <h5 id="current-page" class="navbar-brand" style="padding: 0;">{{header}}</h5>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-left" style="padding-top: 0; margin-top: -5px;">
+          <li style="margin-top: 3px;"><a href="#" style="margin-right: 7px; font-size: 15px;" {{action "toggle"}}><i class="icon-menu" aria-hidden="true"></i></a></li>
+          <li style="margin-top: 3px;"><a href="#" style="margin-left: 7px; font-size: 24px;" {{action "fullScreen"}}><i class="icon-resize-full" aria-hidden="true"></i></a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right" style="padding-top: 0; margin-top: -5px;">
+          <li style="margin-top: 2px;"><a href="#" style="font-size: 24px; padding-left: 10px; padding-right: 10px;"><i class="icon-notifications"></i></a></li>
+          <li style="margin-top: 2px;"><a href="#" style="font-size: 24px; padding-left: 10px; padding-right: 10px;"><i class="icon-support"></i></a></li>
+          <li class="dropdown" style="margin-top: 2px;">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="padding-left: 10px;">
+              <div class="wrap"><img src="images/user-photo.png">
+                <div class="text_over_image">{{substr session.data.user.first_name}}{{substr session.data.user.last_name}}</div>
+              </div>
+            </a>
+            <ul class="dropdown-menu">
+              <div class="panel-body">
+                <a href="#" class="pull-right" style="font-weight: 300; color: #999;" {{action "lockscreen"}}>LOCK SCREEN <i class="fa fa-unlock-alt" aria-hidden="true"></i></a>
+                <div class="wrap-dropdown"><img src="images/user-photo-popup.png">
+                  <div class="text_over_image_dropdown">{{substr session.data.user.first_name}}{{substr session.data.user.last_name}}</div>
+                </div>
+                <h4>{{session.data.user.first_name}} {{session.data.user.last_name}}</h4>
+              </div>
+              <hr style="margin: 0; color: #444;" width="100%" />
+              <li>
+                {{#link-to 'profile'}}Profile{{/link-to}}
+              </li>
+              <li style="margin-bottom: 8px;"><a href="#" {{action "logoutModal"}}>Sign out</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+  </nav>
+
+
+  <nav id="topnav" class="navbar navbar-default navbar-fixed-top hidden-sm hidden-md hidden-lg">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <h5 id="current-page" style="padding-top: 15px;" class="navbar-brand">{{header}}</h5>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div>
+        <ul class="nav navbar-nav navbar-right navbar-toggle" style="padding-top: 0; margin-top: -5px; background-color: transparent;">
+          <li style="margin-top: 20px;"><a href="#" style="margin-right: 7px; font-size: 15px;" {{action "toggle"}}><i class="icon-menu" aria-hidden="true"></i></a></li>
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+    <div style="height: 50px; background-color: #ffffff; margin-top: -13px;">
+      <div class="btn-group" role="group" style="position: absolute; right: 15px; top: 57px;">
+        <a href="#" style="font-size: 24px; color: #FB6560;"><i class="icon-notifications"></i></a>
+        <a href="#" style="font-size: 24px; color: #FB6560;"><i class="icon-support"></i></a>
+        <div class="btn-group pull-right" style="margin-top: 5px;">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 19px; color: #FB6560; background-color: #ffffff; border: 1px solid #FB6560; border-radius: 50%; padding: 5px;">{{substr session.data.user.first_name}}{{substr session.data.user.last_name}}</a>
+          <ul class="dropdown-menu">
+            <div class="panel-body">
+              <a href="#" class="pull-right" style="font-weight: 300; color: #999;" {{action "lockscreen"}}>LOCK SCREEN <i class="fa fa-unlock-alt" aria-hidden="true"></i></a>
+              <div class="wrap-dropdown"><img src="images/user-photo-popup.png">
+                <div class="text_over_image_dropdown">{{substr session.data.user.first_name}}{{substr session.data.user.last_name}}</div>
+              </div>
+              <h4>{{session.data.user.first_name}} {{session.data.user.last_name}}</h4>
+            </div>
+            <hr style="margin: 0; color: #444;" width="100%" />
+            <li>
+              {{#link-to 'profile'}}Profile{{/link-to}}
+            </li>
+            <li style="margin-bottom: 8px;"><a href="#" {{action "logout"}}>Sign out</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="hidden-sm hidden-md hidden-lg" style="min-height: 15px;"></div>
+
+
+
+
+</div>
+
+
+<!-- Modal -->
+<div class="modal signoutModal fade" id="sign-out" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 style="text-align:center; color: #FC7C77;" class="modal-title" id="myModalLabel">SIGN OUT</h4>
+      </div>
+      <div class="modal-body">
+        <div align="center">
+          <p>ARE YOU SURE YOU WANT TO SIGN OUT?</p>
+          <button class="btn btn-info" {{action "logout"}}>SIGN OUT</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
